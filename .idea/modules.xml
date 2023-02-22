@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../prom-2-md.iml" filepath="$PROJECT_DIR$/../prom-2-md.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openmetrics-2-md.iml" filepath="$PROJECT_DIR$/openmetrics-2-md.iml" />
     </modules>
   </component>
 </project>

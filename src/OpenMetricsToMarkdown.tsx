@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import './PrometheusToMarkdown.css';
+import './OpenMetricsToMarkdown.css';
 import ReactMarkdown from 'react-markdown'
-import ReactDom from 'react-dom'
 import remarkGfm from 'remark-gfm'
 
-function PrometheusToMarkdown() {
-    const [prometheusText, setPrometheusText] = useState<string>('');
+function OpenMetricsToMarkdown() {
+    const [openMetricsText, setOpenMetricsText] = useState<string>('');
     const [markdownOutput, setMarkdownOutput] = useState<string>('');
 
     const handleClearClick = () => {
-        setPrometheusText("");
+        setOpenMetricsText("");
         setMarkdownOutput("");
     };
 
@@ -50,7 +49,7 @@ function PrometheusToMarkdown() {
         return keyValuePairs;
     }
 
-    function prometheusToMarkdown(input: string): string {
+    function openMetricsToMarkdown(input: string): string {
         const metrics: Metric[] = [];
 
         // parse input and extract metrics
@@ -98,19 +97,19 @@ function PrometheusToMarkdown() {
 
 
     function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        setPrometheusText(event.target.value);
-        setMarkdownOutput(prometheusToMarkdown(event.target.value));
+        setOpenMetricsText(event.target.value);
+        setMarkdownOutput(openMetricsToMarkdown(event.target.value));
     }
     return (
         <div className="container">
             <div className="input">
-                <h3>Prometheus Exposition Format</h3>
+                <h3>OpenMetrics Exposition Format</h3>
                 <div className="action_buttons">
                     <button onClick={handleClearClick}>Clear</button>
                 </div>
                 <textarea
-                    id="prometheus-input"
-                    value={prometheusText}
+                    id="openMetrics-input"
+                    value={openMetricsText}
                     onChange={handleInputChange}
                 />
             </div>
@@ -130,4 +129,4 @@ function PrometheusToMarkdown() {
     );
 }
 
-export default PrometheusToMarkdown;
+export default OpenMetricsToMarkdown;
