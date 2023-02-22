@@ -1,10 +1,32 @@
 import React, { useState } from 'react';
 import './PrometheusToMarkdown.css';
+import ReactMarkdown from 'react-markdown'
+import ReactDom from 'react-dom'
+import remarkGfm from 'remark-gfm'
+
 function PrometheusToMarkdown() {
     const [prometheusText, setPrometheusText] = useState<string>('');
     const [markdownOutput, setMarkdownOutput] = useState<string>('');
 
-    interface Metric {
+    const handleClearClick = () => {
+        setPrometheusText("");
+        setMarkdownOutput("");
+    };
+
+    function handleSaveMarkdown() {
+        const element = document.createElement("a");
+        const file = new Blob([markdownOutput], { type: "text/plain" });
+        element.href = URL.createObjectURL(file);
+        element.download = "output.md";
+        document.body.appendChild(element);
+        element.click();
+    }
+
+        const handleCopyToClipboard = () => {
+            navigator.clipboard.writeText(markdownOutput);
+        };
+
+        interface Metric {
         name: string;
         type: string;
         description: string;
@@ -60,7 +82,7 @@ function PrometheusToMarkdown() {
         metrics.sort((a, b) => a.name.localeCompare(b.name));
         for (const metric of metrics) {
             output += `## ${metric.name}\n`;
-            output += `Type: ${metric.type}\n`;
+            output += `Type: ${metric.type}\n\n`;
             output += `Description: ${metric.description}\n`;
             if (metric.labels.size> 0) {
                 output += "| Available Labels | Example Value |\n";
@@ -75,20 +97,17 @@ function PrometheusToMarkdown() {
     }
 
 
-
-
-
-
-
     function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         setPrometheusText(event.target.value);
         setMarkdownOutput(prometheusToMarkdown(event.target.value));
     }
-
     return (
         <div className="container">
             <div className="input">
-                <label htmlFor="prometheus-input">Prometheus Exposition Format:</label>
+                <h3>Prometheus Exposition Format</h3>
+                <div className="action_buttons">
+                    <button onClick={handleClearClick}>Clear</button>
+                </div>
                 <textarea
                     id="prometheus-input"
                     value={prometheusText}
@@ -96,13 +115,17 @@ function PrometheusToMarkdown() {
                 />
             </div>
             <div className="output">
-                <label htmlFor="markdown-output">Markdown Output:</label>
-                <textarea
-                    id="markdown-output"
-                    value={markdownOutput}
-                    readOnly
-                />
+                <h3>Markdown Output</h3>
+                <div className="action_buttons">
+                <button onClick={handleCopyToClipboard}>Copy Markdown</button>
+                <button onClick={handleSaveMarkdown}>Save Markdown</button>
+                </div>
+                <div className="scrollable">
+                <ReactMarkdown children={markdownOutput}  remarkPlugins={[remarkGfm]}
+                ></ReactMarkdown>
+                </div>
             </div>
+
         </div>
     );
 }

@@ -1,14 +1,52 @@
 .container {
   display: grid;
+  padding: 3px;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-  height: 100vh; /* set the height of the container to 100% of the viewport height */
+  grid-gap: 5px;
+  height: 95vh; /* set the height of the container to 100% of the viewport height */
 }
 
 .input, .output {
-  width: 100%;
+  padding: 10px;
+  width:95%;
 }
 .input textarea, .output textarea {
   width: 100%;
-  height: calc(90vh - 20px); /* set the height of the textareas to 50% of the viewport height minus the gap between them */
+  height: calc(90vh - 45px); /* set the height of the textareas to 50% of the viewport height minus the gap between them */
+}
+
+.action_buttons {
+  padding-bottom: 4px;
+  padding-top: 0;
+  padding-left: 4px;
+  text-align: right;
+}
+
+.scrollable {
+  height: calc(90vh - 45px);
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  background-color: rgba(4, 170, 109, 0.15);
+}
+
+th, td {
+  padding: 4px;
+  text-align: left;
+  border: 1px solid #ddd;
+
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+
+.reactMarkDown code {
+  margin-left: 2em;
+  display: list-item;
+  text-align: -webkit-match-parent;
 }
