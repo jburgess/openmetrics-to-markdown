@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  height: 100vh; /* set the height of the container to 100% of the viewport height */
+}
+
+.input, .output {
+  width: 100%;
+}
+.input textarea, .output textarea {
+  width: 100%;
+  height: calc(90vh - 20px); /* set the height of the textareas to 50% of the viewport height minus the gap between them */
+}
