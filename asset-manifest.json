@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/openmetrics-2-md/static/css/main.2d3c2ba1.css",
-    "main.js": "/openmetrics-2-md/static/js/main.2a1a0b58.js",
-    "static/js/787.e2c329c2.chunk.js": "/openmetrics-2-md/static/js/787.e2c329c2.chunk.js",
-    "index.html": "/openmetrics-2-md/index.html",
-    "main.2d3c2ba1.css.map": "/openmetrics-2-md/static/css/main.2d3c2ba1.css.map",
-    "main.2a1a0b58.js.map": "/openmetrics-2-md/static/js/main.2a1a0b58.js.map",
-    "787.e2c329c2.chunk.js.map": "/openmetrics-2-md/static/js/787.e2c329c2.chunk.js.map"
+    "main.css": "/openmetrics-to-markdown/static/css/main.2d3c2ba1.css",
+    "main.js": "/openmetrics-to-markdown/static/js/main.4640f636.js",
+    "static/js/787.35f2f494.chunk.js": "/openmetrics-to-markdown/static/js/787.35f2f494.chunk.js",
+    "index.html": "/openmetrics-to-markdown/index.html",
+    "main.2d3c2ba1.css.map": "/openmetrics-to-markdown/static/css/main.2d3c2ba1.css.map",
+    "main.4640f636.js.map": "/openmetrics-to-markdown/static/js/main.4640f636.js.map",
+    "787.35f2f494.chunk.js.map": "/openmetrics-to-markdown/static/js/787.35f2f494.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2d3c2ba1.css",
-    "static/js/main.2a1a0b58.js"
+    "static/js/main.4640f636.js"
   ]
 }
