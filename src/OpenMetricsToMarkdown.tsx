@@ -99,11 +99,12 @@ function OpenMetricsToMarkdown() {
                 output += "|------------------|---------------|\n";
 
                 for (const [key, value] of metric.labels) {
-                    output += `| ${key} | ${value[0]} |\n\n`;
+                    output += `| ${key} | ${value[0]} |\n`;
                 }
             }
             output += "  \n";
-            output += "\n<details><summary>Raw</summary>\n\n";
+            output += " </br>";
+            output += "\n<details><summary>Raw Metric</summary>\n\n";
             output += "```text\n";
             let rawRows = "";
             metric.source.forEach((line) => {
