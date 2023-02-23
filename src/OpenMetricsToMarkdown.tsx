@@ -5,11 +5,6 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw'
 
 
-// Define the `test` option
-const options = {
-    test: 'tango'};
-
-
 function OpenMetricsToMarkdown() {
     const [openMetricsText, setOpenMetricsText] = useState<string>('');
     const [markdownOutput, setMarkdownOutput] = useState<string>('');
@@ -69,14 +64,13 @@ function OpenMetricsToMarkdown() {
             const line = lines[i].trim();
             if (line.startsWith("# HELP ")) {
                 const [name, description] = parseNameAndDescription(line);
-                const [type, j] = parseType(lines, i + 1);
+                const [type] = parseType(lines, i + 1);
                 const source:string[] = [];
                 const metric = { name, description, type, source, labels: new Map() };
                 currentMetric = metric;
                 metric.source.push(line);
 
                 metrics.push(metric);
-                // i = j; // skip type line
             } else if (line.startsWith("# TYPE ")) {
                 if (currentMetric) currentMetric.source.push(line);
             } else {
@@ -111,9 +105,11 @@ function OpenMetricsToMarkdown() {
             output += "  \n";
             output += "\n<details><summary>Raw</summary>\n\n";
             output += "```text\n";
-                metric.source.forEach((line) => {
-                    output +=  `${line}\n`;
-                });
+            let rawRows = "";
+            metric.source.forEach((line) => {
+                rawRows +=  `${line}\n`;
+            });
+            output += rawRows;
             output += "```\n";
             output += "</details>\n\n";
             output += "---\n";
