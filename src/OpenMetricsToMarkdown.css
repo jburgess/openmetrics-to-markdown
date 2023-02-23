@@ -1,25 +1,51 @@
 .container {
+  margin: 10px;
   display: grid;
   padding: 3px;
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
-  height: 95vh; /* set the height of the container to 100% of the viewport height */
+  height: 97vh; /* set the height of the container to 100% of the viewport height */
+}
+
+.input-header h3 button, .output-header h3 button {
+  vertical-align: bottom;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+h3{
+  padding-left: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin: 0;
 }
 
 .input, .output {
-  padding: 10px;
-  width:95%;
+  padding: 5px;
+  width: 95%;
 }
 .input textarea, .output textarea {
   width: 100%;
   height: calc(90vh - 45px); /* set the height of the textareas to 50% of the viewport height minus the gap between them */
 }
 
-.action_buttons {
-  padding-bottom: 4px;
-  padding-top: 0;
-  padding-left: 4px;
-  text-align: right;
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  resize: both;
+}
+
+.input-header,
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action_buttons button {
+  margin-left: 10px;
 }
 
 .scrollable {

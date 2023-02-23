@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './OpenMetricsToMarkdown.css';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -14,22 +14,22 @@ function OpenMetricsToMarkdown() {
 
     function handleSaveMarkdown() {
         const element = document.createElement("a");
-        const file = new Blob([markdownOutput], { type: "text/plain" });
+        const file = new Blob([markdownOutput], {type: "text/plain"});
         element.href = URL.createObjectURL(file);
         element.download = "output.md";
         document.body.appendChild(element);
         element.click();
     }
 
-        const handleCopyToClipboard = () => {
-            navigator.clipboard.writeText(markdownOutput);
-        };
+    const handleCopyToClipboard = () => {
+        navigator.clipboard.writeText(markdownOutput);
+    };
 
-        interface Metric {
+    interface Metric {
         name: string;
         type: string;
         description: string;
-        labels: Map<string, string>;
+        labels: Map<string, [string]>;
         value?: number;
         buckets?: { [key: string]: number };
     }
@@ -61,7 +61,7 @@ function OpenMetricsToMarkdown() {
                 const description = line.substring(name.length + "# HELP ".length + 1);
                 const typeLine = lines[i + 1].trim();
                 const type = typeLine.substring("# TYPE ".length).split(" ")[1]
-                const metric: Metric = { name, type, description, labels: new Map() };
+                const metric: Metric = {name, type, description, labels: new Map()};
                 metrics.push(metric);
                 i++; // skip type line
             } else if (line.startsWith("# TYPE ")) {
@@ -71,7 +71,14 @@ function OpenMetricsToMarkdown() {
                 const labels: Map<string, string> = extractKeyValuePair(line);
                 const metric = metrics.find(m => m.name === name);
                 if (metric) {
-                    metric.labels= labels;
+                    labels.forEach((value, key) => {
+                        const previous = metric.labels.get(key);
+                        if (!previous) {
+                            metric.labels.set(key, [value]);
+                        } else {
+                            previous.push(value);
+                        }
+                    });
                 }
             }
         }
@@ -83,11 +90,11 @@ function OpenMetricsToMarkdown() {
             output += `## ${metric.name}\n`;
             output += `Type: ${metric.type}\n\n`;
             output += `Description: ${metric.description}\n`;
-            if (metric.labels.size> 0) {
+            if (metric.labels.size > 0) {
                 output += "| Available Labels | Example Value |\n";
                 output += "|------------------|---------------|\n";
                 for (const [key, value] of metric.labels) {
-                    output += `| ${key} | ${value} |\n`;
+                    output += `| ${key} | ${value[0]} |\n`;
                 }
             }
             output += "\n";
@@ -100,12 +107,15 @@ function OpenMetricsToMarkdown() {
         setOpenMetricsText(event.target.value);
         setMarkdownOutput(openMetricsToMarkdown(event.target.value));
     }
+
     return (
         <div className="container">
             <div className="input">
-                <h3>OpenMetrics Exposition Format</h3>
-                <div className="action_buttons">
-                    <button onClick={handleClearClick}>Clear</button>
+                <div className="input-header">
+                    <h3>OpenMetrics</h3>
+                    <div className="action_buttons">
+                        <button onClick={handleClearClick}>Clear</button>
+                    </div>
                 </div>
                 <textarea
                     id="openMetrics-input"
@@ -114,14 +124,16 @@ function OpenMetricsToMarkdown() {
                 />
             </div>
             <div className="output">
-                <h3>Markdown Output</h3>
-                <div className="action_buttons">
-                <button onClick={handleCopyToClipboard}>Copy Markdown</button>
-                <button onClick={handleSaveMarkdown}>Save Markdown</button>
+                <div className="output-header">
+                    <h3>Markdown Output</h3>
+                    <div className="action_buttons">
+                        <button onClick={handleCopyToClipboard}>Copy Markdown</button>
+                        <button onClick={handleSaveMarkdown}>Save Markdown</button>
+                    </div>
                 </div>
                 <div className="scrollable">
-                <ReactMarkdown children={markdownOutput}  remarkPlugins={[remarkGfm]}
-                ></ReactMarkdown>
+                    <ReactMarkdown children={markdownOutput} remarkPlugins={[remarkGfm]}
+                    ></ReactMarkdown>
                 </div>
             </div>
 
