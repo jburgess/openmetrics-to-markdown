@@ -1,25 +1,21 @@
-name: Publish Github Pages
-
 on:
   push:
     branches:
-      - main
+      - "main"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.build-publish.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build
-        run: |
-          npm install
-          npm run deploy
-          
-
-      - name: Publish to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - id: build-publish
+        uses: bitovi/github-actions-react-to-ghp@v1.2.0
         with:
-          personal_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./build
+          path: dist
