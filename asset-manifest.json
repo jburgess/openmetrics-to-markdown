@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/openmetrics-to-markdown/static/css/main.2d3c2ba1.css",
-    "main.js": "/openmetrics-to-markdown/static/js/main.222e8b9f.js",
+    "main.js": "/openmetrics-to-markdown/static/js/main.607ce074.js",
     "static/js/787.35f2f494.chunk.js": "/openmetrics-to-markdown/static/js/787.35f2f494.chunk.js",
     "index.html": "/openmetrics-to-markdown/index.html",
     "main.2d3c2ba1.css.map": "/openmetrics-to-markdown/static/css/main.2d3c2ba1.css.map",
-    "main.222e8b9f.js.map": "/openmetrics-to-markdown/static/js/main.222e8b9f.js.map",
+    "main.607ce074.js.map": "/openmetrics-to-markdown/static/js/main.607ce074.js.map",
     "787.35f2f494.chunk.js.map": "/openmetrics-to-markdown/static/js/787.35f2f494.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2d3c2ba1.css",
-    "static/js/main.222e8b9f.js"
+    "static/js/main.607ce074.js"
   ]
 }
