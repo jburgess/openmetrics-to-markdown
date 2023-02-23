@@ -1,16 +1,16 @@
 # OpenMetrics to Markdown
 
-OpenMetrics to Markdown is a React application that enables users to convert an OpenMetrics file to a Markdown file. All you need to do is to paste the plaintext of an OpenMetrics or Prometheus output into the text area and click the 'Convert' button.
+OpenMetrics to Markdown is a _React_ application that enables users to convert an [OpenMetrics](https://openmetrics.io/) file to a Markdown file. All you need to do is to paste the plaintext of an [OpenMetrics](https://openmetrics.io/) or [Prometheus](https://prometheus.io/) output into the text area and click the 'Convert' button.
 
 ## Features
 
-* Convert OpenMetrics files to Markdown
+* Convert _OpenMetrics_ files to Markdown
 * Simple and easy to use
 * Online demo available
 
 ## Online Demo
 
-You can try OpenMetrics to Markdown without installing it on your machine. Just visit our [Online Demo](https://jburgess.github.io/openmetrics-to-markdown/) and follow the instructions.
+You can try _OpenMetrics_ to Markdown without installing it on your machine. Just visit the [Online Demo](https://jburgess.github.io/openmetrics-to-markdown/).
 
 ## Screenshot
 
