@@ -1,8 +1,8 @@
 {
-  "name": "openmetrics-2-md",
+  "name": "openmetrics-to-markdown",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://jburgess.github.io/openmetrics-2-md",
+  "homepage": "http://jburgess.github.io/openmetrics-to-markdown",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
