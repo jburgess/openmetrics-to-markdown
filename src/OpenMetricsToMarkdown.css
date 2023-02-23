@@ -1,10 +1,10 @@
 .container {
   margin: 10px;
   display: grid;
-  padding: 3px;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 2px;
-  height: 97vh; /* set the height of the container to 100% of the viewport height */
+  padding: 0px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0px;
+  height: 97vh;
 }
 
 .input-header h3 button, .output-header h3 button {
@@ -13,6 +13,7 @@
   margin: 0;
   width: 100%;
 }
+
 h3{
   padding-left: 5px;
   padding-bottom: 5px;
@@ -49,6 +50,9 @@ textarea {
 
 .scrollable {
   height: calc(90vh - 45px);
+  width: calc(50vw - 10px);
+  border-radius: 4px;
+  box-sizing: border-box;
   overflow-y: scroll;
   padding-left: 10px;
   padding-right: 10px;

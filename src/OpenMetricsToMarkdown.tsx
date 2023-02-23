@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import './OpenMetricsToMarkdown.css';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw'
+
+
+// Define the `test` option
+const options = {
+    test: 'tango'};
+
 
 function OpenMetricsToMarkdown() {
     const [openMetricsText, setOpenMetricsText] = useState<string>('');
@@ -29,6 +36,7 @@ function OpenMetricsToMarkdown() {
         name: string;
         type: string;
         description: string;
+        source: string[];
         labels: Map<string, [string]>;
     }
 
@@ -56,22 +64,25 @@ function OpenMetricsToMarkdown() {
     function parseMetrics(input: string): Metric[] {
         const lines = input.trim().split("\n");
         const metrics: Metric[] = [];
-
+        let currentMetric: Metric | undefined;
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
-
             if (line.startsWith("# HELP ")) {
                 const [name, description] = parseNameAndDescription(line);
                 const [type, j] = parseType(lines, i + 1);
-                const metric = { name, description, type, labels: new Map() };
+                const source:string[] = [];
+                const metric = { name, description, type, source, labels: new Map() };
+                currentMetric = metric;
+                metric.source.push(line);
+
                 metrics.push(metric);
-                i = j; // skip type line
+                // i = j; // skip type line
             } else if (line.startsWith("# TYPE ")) {
-                // skip, already handled
+                if (currentMetric) currentMetric.source.push(line);
             } else {
+                if (currentMetric) currentMetric.source.push(line);
                 const [name, labels] = parseNameAndLabels(line);
                 const metric = metrics.find(m => m.name === name);
-
                 if (metric) {
                     updateLabels(metric.labels, labels);
                 }
@@ -86,19 +97,27 @@ function OpenMetricsToMarkdown() {
 
         for (const metric of sortedMetrics) {
             output += `## ${metric.name}\n`;
-            output += `Type: ${metric.type}\n\n`;
-            output += `Description: ${metric.description}\n`;
+            output += `**Type**: ${metric.type}\n\n`;
+            output += `**Description**: ${metric.description}\n`;
 
             if (metric.labels.size > 0) {
                 output += "| Available Labels | Example Value |\n";
                 output += "|------------------|---------------|\n";
 
                 for (const [key, value] of metric.labels) {
-                    output += `| ${key} | ${value[0]} |\n`;
+                    output += `| ${key} | ${value[0]} |\n\n`;
                 }
             }
+            output += "  \n";
+            output += "\n<details><summary>Raw</summary>\n\n";
+            output += "```text\n";
+                metric.source.forEach((line) => {
+                    output +=  `${line}\n`;
+                });
+            output += "```\n";
+            output += "</details>\n\n";
+            output += "---\n";
 
-            output += "\n";
         }
 
         return output;
@@ -164,7 +183,9 @@ function OpenMetricsToMarkdown() {
                     </div>
                 </div>
                 <div className="scrollable">
-                    <ReactMarkdown children={markdownOutput} remarkPlugins={[remarkGfm]}
+                    <ReactMarkdown children={markdownOutput}
+                                   rehypePlugins={[rehypeRaw]}
+                                   remarkPlugins={[remarkGfm]}
                     ></ReactMarkdown>
                 </div>
             </div>
