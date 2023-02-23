@@ -30,8 +30,6 @@ function OpenMetricsToMarkdown() {
         type: string;
         description: string;
         labels: Map<string, [string]>;
-        value?: number;
-        buckets?: { [key: string]: number };
     }
 
     function extractKeyValuePair(str: string): Map<string, string> {
@@ -50,56 +48,90 @@ function OpenMetricsToMarkdown() {
     }
 
     function openMetricsToMarkdown(input: string): string {
+        const metrics: Metric[] = parseMetrics(input);
+
+        return generateMarkdown(metrics);
+    }
+
+    function parseMetrics(input: string): Metric[] {
+        const lines = input.trim().split("\n");
         const metrics: Metric[] = [];
 
-        // parse input and extract metrics
-        const lines = input.trim().split("\n");
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
+
             if (line.startsWith("# HELP ")) {
-                const name = line.substring("# HELP ".length).split(" ")[0];
-                const description = line.substring(name.length + "# HELP ".length + 1);
-                const typeLine = lines[i + 1].trim();
-                const type = typeLine.substring("# TYPE ".length).split(" ")[1]
-                const metric: Metric = {name, type, description, labels: new Map()};
+                const [name, description] = parseNameAndDescription(line);
+                const [type, j] = parseType(lines, i + 1);
+                const metric = { name, description, type, labels: new Map() };
                 metrics.push(metric);
-                i++; // skip type line
+                i = j; // skip type line
             } else if (line.startsWith("# TYPE ")) {
                 // skip, already handled
             } else {
-                const name = line.split(" ")[0].split("{")[0];
-                const labels: Map<string, string> = extractKeyValuePair(line);
+                const [name, labels] = parseNameAndLabels(line);
                 const metric = metrics.find(m => m.name === name);
+
                 if (metric) {
-                    labels.forEach((value, key) => {
-                        const previous = metric.labels.get(key);
-                        if (!previous) {
-                            metric.labels.set(key, [value]);
-                        } else {
-                            previous.push(value);
-                        }
-                    });
+                    updateLabels(metric.labels, labels);
                 }
             }
         }
+        return metrics;
+    }
 
-        // generate markdown output
+    function generateMarkdown(metrics: Metric[]): string {
+        const sortedMetrics = metrics.slice().sort((a, b) => a.name.localeCompare(b.name));
         let output = "";
-        metrics.sort((a, b) => a.name.localeCompare(b.name));
-        for (const metric of metrics) {
+
+        for (const metric of sortedMetrics) {
             output += `## ${metric.name}\n`;
             output += `Type: ${metric.type}\n\n`;
             output += `Description: ${metric.description}\n`;
+
             if (metric.labels.size > 0) {
                 output += "| Available Labels | Example Value |\n";
                 output += "|------------------|---------------|\n";
+
                 for (const [key, value] of metric.labels) {
                     output += `| ${key} | ${value[0]} |\n`;
                 }
             }
+
             output += "\n";
         }
+
         return output;
+    }
+
+    function parseNameAndDescription(line: string): [string, string] {
+        const name = line.substring("# HELP ".length).split(" ")[0];
+        const description = line.substring(name.length + "# HELP ".length + 1);
+        return [name, description];
+    }
+
+    function parseType(lines: string[], i: number): [string, number] {
+        const typeLine = lines[i].trim();
+        const type = typeLine.substring("# TYPE ".length).split(" ")[1];
+        return [type, i + 1];
+    }
+
+    function parseNameAndLabels(line: string): [string, Map<string, string>] {
+        const name = line.split(" ")[0].split("{")[0];
+        const labels = extractKeyValuePair(line);
+        return [name, labels];
+    }
+
+    function updateLabels(map: Map<string, string[]>, newLabels: Map<string, string>): void {
+        newLabels.forEach((value, key) => {
+            const previous = map.get(key);
+
+            if (!previous) {
+                map.set(key, [value]);
+            } else {
+                previous.push(value);
+            }
+        });
     }
 
 

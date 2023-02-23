@@ -3,7 +3,7 @@
   display: grid;
   padding: 3px;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 5px;
+  grid-gap: 2px;
   height: 97vh; /* set the height of the container to 100% of the viewport height */
 }
 
@@ -32,9 +32,8 @@ h3{
 textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 12px 20px;
   box-sizing: border-box;
-  resize: both;
+  resize: none;
 }
 
 .input-header,
@@ -51,6 +50,8 @@ textarea {
 .scrollable {
   height: calc(90vh - 45px);
   overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
   border: 1px solid #ccc;
 }
 
